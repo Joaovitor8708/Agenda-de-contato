@@ -16,7 +16,6 @@ if (form) {
 
     let contatos = JSON.parse(localStorage.getItem('contatos')) || [];
 
-    // ✅ Agora verifica duplicado APENAS por telefone OU email
     const existe = contatos.some(c =>
       c.telefone === telefone || c.email === email
     );

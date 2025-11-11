@@ -16,12 +16,13 @@ if (form) {
 
     let contatos = JSON.parse(localStorage.getItem('contatos')) || [];
 
+    // ✅ Agora verifica duplicado APENAS por telefone OU email
     const existe = contatos.some(c =>
-      c.nome === nome || c.telefone === telefone
+      c.telefone === telefone || c.email === email
     );
 
     if (existe) {
-      alert("Contato com mesmo nome ou telefone já cadastrado!");
+      alert("Já existe um contato com esse telefone ou e-mail!");
       return;
     }
 

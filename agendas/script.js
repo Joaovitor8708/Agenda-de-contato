@@ -1,3 +1,4 @@
+
 const form = document.getElementById('formContato');
 const tabela = document.getElementById('tabelaContatos');
 
@@ -10,7 +11,7 @@ if (form) {
     const telefone = document.getElementById('telefone').value.trim();
 
     if (!nome || !telefone || !email) {
-      alert("Preencha todos os campos!");
+      Swal.fire("Atenção!", "Preencha todos os campos!", "warning")
       return;
     }
 
@@ -21,7 +22,7 @@ if (form) {
     );
 
     if (existe) {
-      alert("Já existe um contato com esse telefone ou e-mail!");
+      Swal.fire("Ops!", "Já existe um contato com esse telefone ou e-mail!", "error");
       return;
     }
 
@@ -29,7 +30,7 @@ if (form) {
 
     localStorage.setItem('contatos', JSON.stringify(contatos));
 
-    alert("Contato salvo com sucesso!");
+    Swal.fire("Sucesso", "Contato salvo com sucesso!", "success");
     form.reset();
   });
 }
@@ -54,11 +55,27 @@ if (tabela) {
   }
 
   window.removerContato = function(index) {
-    let contatos = JSON.parse(localStorage.getItem('contatos')) || [];
-    contatos.splice(index, 1);
-    localStorage.setItem('contatos', JSON.stringify(contatos));
-    carregarContatos();
-  };
+    Swal.fire({
+      title: "Tem certeza que deseja excluir?",
+      text: "Essa ação não poderá ser desfeita!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, excluir",
+      cancelButtonText: "Cancelar"
+    }).then((result) => { //espera a resposta do usuario(promise)
+      if (result.isConfirmed) {
+        let contatos = JSON.parse(localStorage.getItem('contatos')) || [];
+        contatos.splice(index, 1);
+        localStorage.setItem('contatos', JSON.stringify(contatos));
+        carregarContatos();
+
+        Swal.fire("Excluído!", "O contato foi removido com sucesso.", "success");
+      }
+  });
+
+  }
 
   carregarContatos();
 }
